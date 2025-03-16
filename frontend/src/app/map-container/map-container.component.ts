@@ -13,9 +13,9 @@ import Style from 'ol/style/Style';
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import Overlay from 'ol/Overlay';
-import { MapComponent } from '../components/map/map.component';
 import { LocationCardComponent } from '../components/location-card/location-card.component';
 
+// Interface pour représenter une localisation
 interface Location {
   id: number;
   latitude: number;
@@ -41,6 +41,7 @@ export class MapContainerComponent implements AfterViewInit {
     private http: HttpClient
   ) {}
 
+  // Fonction pour zoomer sur la carte
   onZoomIn(): void {
     if (!this.map) return;
     const view = this.map.getView();
@@ -48,6 +49,7 @@ export class MapContainerComponent implements AfterViewInit {
     view.animate({ zoom: currentZoom + 1, duration: 250 });
   }
 
+  // Fonction pour dézoomer sur la carte
   onZoomOut(): void {
     if (!this.map) return;
     const view = this.map.getView();
@@ -55,10 +57,12 @@ export class MapContainerComponent implements AfterViewInit {
     view.animate({ zoom: currentZoom - 1, duration: 250 });
   }
 
+  // Fonction appelée lorsqu'une localisation est ajoutée
   onLocationAdded(): void {
     this.loadUserLocations();
   }
 
+  // Initialisation de la carte après le rendu de la vue
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       setTimeout(() => {
@@ -68,6 +72,7 @@ export class MapContainerComponent implements AfterViewInit {
     }
   }
 
+  // Chargement des localisations de l'utilisateur depuis l'API
   async loadUserLocations(): Promise<void> {
     if (!this.currentUserId) return;
 
@@ -82,6 +87,7 @@ export class MapContainerComponent implements AfterViewInit {
     }
   }
 
+  // Mise à jour des marqueurs sur la carte
   private updateMarkers(locations: Location[]): void {
     this.vectorSource.clear();
     
@@ -93,6 +99,7 @@ export class MapContainerComponent implements AfterViewInit {
       });
     });
 
+    // Appliquer un style aux marqueurs
     features.forEach(feature => {
       feature.setStyle(new Style({
         image: new Icon({
@@ -106,7 +113,9 @@ export class MapContainerComponent implements AfterViewInit {
     this.vectorSource.addFeatures(features);
   }
 
+  // Initialisation de la carte OpenLayers
   private initMap(): void {
+    // Couche de fond OpenStreetMap
     const osmLayer = new TileLayer({
       source: new OSM(),
     });
@@ -116,6 +125,7 @@ export class MapContainerComponent implements AfterViewInit {
       source: this.vectorSource
     });
 
+    // Création de l'élément HTML pour l'infobulle
     const popupElement = document.createElement('div');
     popupElement.className = 'map-popup';
     popupElement.style.position = 'absolute';
@@ -128,12 +138,14 @@ export class MapContainerComponent implements AfterViewInit {
 
     document.body.appendChild(popupElement);
 
+    // Définition de l'overlay pour afficher les détails d'un marqueur
     this.popupOverlay = new Overlay({
       element: popupElement,
       positioning: 'bottom-center',
       offset: [0, -15],
     });
 
+    // Initialisation de la carte
     this.map = new Map({
       target: 'ol-map',
       layers: [osmLayer, this.markerLayer],
@@ -144,6 +156,7 @@ export class MapContainerComponent implements AfterViewInit {
       overlays: [this.popupOverlay],
     });
 
+    // Gestion des clics sur la carte pour afficher les détails des marqueurs
     this.map.on('click', (event) => {
       const features = this.map.getFeaturesAtPixel(event.pixel);
       if (features.length > 0) {
