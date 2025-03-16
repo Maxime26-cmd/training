@@ -1,0 +1,14 @@
+<div class="location-card">
+  <div class="location-info">
+    <h3>Location</h3>
+    <div class="coordinates">
+      <p><strong>Latitude:</strong> {{ location.latitude }}</p>
+      <p><strong>Longitude:</strong> {{ location.longitude }}</p>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="delete-btn" (click)="onDelete()">
+      Supprimer
+    </button>
+  </div>
+</div> 

@@ -1,0 +1,27 @@
+<div class="card">
+  <h3>Nouvelle location</h3>
+
+  <form [formGroup]="locationForm" ngNativeValidate>
+    <div class="form-group">
+      <label>Latitude</label>
+      <input type="text" formControlName="latitude" placeholder="Ex: 48.8566" />
+      <div class="error-message" *ngIf="locationForm.controls['latitude'].invalid && locationForm.controls['latitude'].touched">
+        <small>Format invalide</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Longitude</label>
+      <input type="text" formControlName="longitude" placeholder="Ex: 2.3522" />
+      <div class="error-message" *ngIf="locationForm.controls['longitude'].invalid && locationForm.controls['longitude'].touched">
+        <small>Format invalide</small>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button type="button" class="add-btn" (click)="onAdd()" [disabled]="locationForm.invalid || location">
+        Ajouter
+      </button>
+    </div>
+  </form>
+</div>

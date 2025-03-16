@@ -1,0 +1,26 @@
+<header>
+  <nav>
+    <div class="nav-links">
+      <a [routerLink]="['/']" *ngIf="isLoggedIn()">Accueil</a>
+      <a [routerLink]="['/map']" *ngIf="isLoggedIn()">Carte du monde</a>
+    </div>
+    
+    <div *ngIf="isLoggedIn()" class="user-info">
+      <span>{{ getUsername() }}</span>
+      <div class="profile-section">
+        <img [src]="getProfilePicture() || '/assets/default-avatar.png'" 
+             alt="Photo de profil"
+             class="profile-picture" 
+             (error)="handleImageError($event)">
+        <label class="upload-button">
+          <input type="file"
+                 (change)="onFileSelected($event)"
+                 accept="image/*"
+                 style="display: none;">
+          <span class="upload-icon">📷</span>
+        </label>
+      </div>
+      <button (click)="logout()">Déconnexion</button>
+    </div>
+  </nav>
+</header>

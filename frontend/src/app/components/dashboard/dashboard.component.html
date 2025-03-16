@@ -1,0 +1,31 @@
+<div class="dashboard-container" *ngIf="currentUserId; else notConnected">
+  <!-- Formulaire d'ajout de location -->
+  <section class="add-location-section">
+    <app-location-card 
+      [userId]="currentUserId" 
+      (locationAdded)="loadUserLocations()">
+    </app-location-card>
+  </section>
+
+  <!-- Liste des locations existantes -->
+  <section class="locations-list" *ngIf="locations.length > 0">
+    <h2>📍 Mes locations</h2>
+    <div class="locations-grid">
+      <app-location-display
+        *ngFor="let loc of locations"
+        [location]="loc"
+        (locationDeleted)="loadUserLocations()">
+      </app-location-display>
+    </div>
+  </section>
+
+  <section class="no-locations" *ngIf="locations.length === 0">
+    <p>🏠 Vous n'avez pas encore de locations enregistrées.</p>
+  </section>
+</div>
+
+<ng-template #notConnected>
+  <div class="not-connected">
+    <p>🔒 Veuillez vous connecter pour gérer vos locations.</p>
+  </div>
+</ng-template>

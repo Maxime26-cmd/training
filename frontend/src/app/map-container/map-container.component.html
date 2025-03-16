@@ -1,0 +1,32 @@
+
+<div class="map-wrapper">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>📍 Mes Locations</h2>
+    </div>
+    
+    <div class="sidebar-content">
+      <app-location-card
+        [userId]="currentUserId!"
+        (locationAdded)="onLocationAdded()">
+      </app-location-card>
+    </div>
+  </aside>
+
+  <main class="map-content">
+    <div class="map-controls">
+      <button class="control-btn" (click)="onZoomIn()">
+        <span>+</span>
+      </button>
+      <button class="control-btn" (click)="onZoomOut()">
+        <span>-</span>
+      </button>
+    </div>
+
+    <div id="ol-map" class="map-view"></div>
+  </main>
+</div>
+
+
+
+
